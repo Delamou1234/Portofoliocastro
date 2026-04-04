@@ -31,7 +31,7 @@
 <header class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <a href="{% url 'home' %}" class="logo-container">
+                <a href="{% url 'home_portfolio' %}" class="logo-container">
                     <img src="{% static 'home/benin-flag.svg' %}" alt="Drapeau du Bénin">
                     <span class="logo-text">PORTFOLIO</span>
                 </a>
@@ -337,10 +337,10 @@
                 <div class="footer-links">
                     <h4>Navigation</h4>
                     <ul>
-                        <li><a href="#home">Accueil</a></li>
-                        <li><a href="#about">Expertise</a></li>
-                        <li><a href="#skills">Recherche</a></li>
-                        <li><a href="#projects">Publications</a></li>
+                        <li><a href="{% url 'home_portfolio' %}#home">Accueil</a></li>
+                        <li><a href="{% url 'home_portfolio' %}#about">Expertise</a></li>
+                        <li><a href="{% url 'home_portfolio' %}#skills">Recherche</a></li>
+                        <li><a href="{% url 'home_portfolio' %}#projects">Publications</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">

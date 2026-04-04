@@ -16,6 +16,11 @@ from .forms import ProfileForm, ProjectForm, SkillForm
 from .services import send_contact_email, GeminiService, GitHubService
 
 
+def splash(request):
+    """Vue pour la page de chargement doctorale (splash screen)."""
+    return render(request, 'home/splash.html')
+
+
 def index(request):
     profile, created = Profile.objects.get_or_create(
         pk=1,

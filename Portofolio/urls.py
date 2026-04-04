@@ -22,11 +22,10 @@ from django.conf.urls.static import static
 from home import views as home_views
 
 urlpatterns = [
-    path('', home_views.index, name='home'),
     path('', include('home.urls')),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='home_portfolio'), name='logout'),
 ]
 
 if settings.DEBUG:
