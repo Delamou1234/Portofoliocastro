@@ -58,6 +58,7 @@
                     <tr>
                         <th>Projet</th>
                         <th>Technologies</th>
+                        <th>Affichage</th>
                         <th>Visibilité</th>
                         <th>Création</th>
                         <th>Actions</th>
@@ -87,6 +88,11 @@
                                     <span class="tech-tag-mini">{{ tech }}</span>
                                 {% endfor %}
                             </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'toggle_project_visibility' project.pk %}" class="action-btn {% if project.is_visible %}edit{% else %}delete{% endif %}" title="{% if project.is_visible %}Masquer{% else %}Afficher{% endif %}">
+                                <i class="fas {% if project.is_visible %}fa-eye{% else %}fa-eye-slash{% endif %}"></i>
+                            </a>
                         </td>
                         <td>
                             {% if project.featured %}

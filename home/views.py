@@ -33,7 +33,7 @@ def index(request):
         }
     )
 
-    projects = Project.objects.all().order_by('-created_at')[:6]
+    projects = Project.objects.filter(is_visible=True).order_by('-created_at')[:6]
     skills_analysis = Skill.objects.filter(category='analysis')
     skills_programming = Skill.objects.filter(category='programming')
     skills_database = Skill.objects.filter(category='database')
@@ -233,8 +233,19 @@ def delete_project(request, pk):
     project = get_object_or_404(Project, pk=pk)
     if request.method == 'POST':
         project.delete()
+        messages.success(request, "Projet supprimé avec succès !")
         return redirect('dashboard_projects')
     return render(request, 'home/project_confirm_delete.html', {'project': project})
+
+
+@login_required
+def toggle_project_visibility(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    project.is_visible = not project.is_visible
+    project.save()
+    status = "activée" if project.is_visible else "désactivée"
+    messages.success(request, f"Visibilité du projet {status} !")
+    return redirect('dashboard_projects')
 
 @login_required
 def site_settings(request):

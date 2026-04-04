@@ -12,6 +12,7 @@ urlpatterns = [
     path('dashboard/projects/', views.manage_projects, name='dashboard_projects'),
     path('dashboard/projects/<int:pk>/edit/', views.edit_project, name='dashboard_project_edit'),
     path('dashboard/projects/<int:pk>/delete/', views.delete_project, name='dashboard_project_delete'),
+    path('dashboard/projects/<int:pk>/toggle-visibility/', views.toggle_project_visibility, name='toggle_project_visibility'),
     path('dashboard/skills/', views.manage_skills, name='dashboard_skills'),
     path('dashboard/skills/<int:pk>/edit/', views.edit_skill, name='dashboard_skill_edit'),
     path('dashboard/skills/<int:pk>/delete/', views.delete_skill, name='dashboard_skill_delete'),
