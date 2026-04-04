@@ -241,7 +241,7 @@ LOGGING = {
 # ==============================================================================
 
 LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home_portfolio'
 
 # ==============================================================================
 # DEFAULT AUTO FIELD
