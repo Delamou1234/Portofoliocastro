@@ -1,0 +1,350 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DELAMOU Samaké - Data Analyst Portfolio</title>
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+<header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" class="logo-container">
+                    <img src="{% static 'home/guinea-flag.svg' %}" alt="Drapeau de la Guinée">
+                    <span class="logo-text">PORTFOLIO</span>
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home" class="nav-link active">Accueil</a></li>
+                    <li><a href="#about" class="nav-link">À propos</a></li>
+                    <li><a href="#skills" class="nav-link">Compétences</a></li>
+                    <li><a href="#projects" class="nav-link">Projets</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li class="nav-auth">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'dashboard' %}" class="nav-link dashboard-link">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="nav-link login-link">
+                                <i class="fas fa-user-circle"></i> Connexion
+                            </a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="welcome-text">Bienvenue</h1>
+                        <h2 class="hero-title">Je suis <span class="highlight">{{ profile.full_name }}</span></h2>
+                        <h3 class="hero-subtitle">{{ profile.title }}</h3>
+                        <p class="hero-description">
+                            {{ profile.bio }}
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#contact" class="btn btn-primary">M'engager</a>
+                            <a href="#projects" class="btn btn-secondary">Voir mes projets</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="image-container">
+                            <img src="{{ profile_image_url }}" alt="{{ profile.full_name }}">
+                            <div class="floating-elements">
+                                <div class="floating-icon brain-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="floating-badge">
+                                    <span>"La Data raconte une histoire"</span>
+                                </div>
+                                <div class="floating-counter">
+                                    <span class="counter-number">{{ project_count }}+</span>
+                                    <span class="counter-text">Projets</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">À propos de moi</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>
+                            En tant que Data Analyst, je transforme les données brutes en informations exploitables. 
+                            Mon expertise couvre l'ensemble du pipeline d'analyse de données, de la collecte à la visualisation.
+                        </p>
+                        <p>
+                            Je suis spécialisé dans l'utilisation d'outils modernes comme Python, SQL, et des plateformes de 
+                            Business Intelligence pour créer des tableaux de bord interactifs et des rapports détaillés.
+                        </p>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <h3>{{ profile.years_experience }}+</h3>
+                                <p>Années d'expérience</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>{{ project_count }}+</h3>
+                                <p>Projets réalisés</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>{{ profile.clients_count }}+</h3>
+                                <p>Clients satisfaits</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="{% static 'ia.png' %}" alt="Illustration IA">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title">Compétences</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3><i class="fas fa-chart-line"></i> Analyse de données</h3>
+                        <ul>
+                            {% for skill in skills_analysis %}
+                                <li>{{ skill.name }}</li>
+                            {% empty %}
+                                <li>Statistiques descriptives</li>
+                                <li>Analyse exploratoire</li>
+                                <li>Data cleaning</li>
+                                <li>Feature engineering</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-code"></i> Programmation</h3>
+                        <ul>
+                            {% for skill in skills_programming %}
+                                <li>{{ skill.name }}</li>
+                            {% empty %}
+                                <li>Python (Pandas, NumPy, Matplotlib)</li>
+                                <li>SQL</li>
+                                <li>R</li>
+                                <li>JavaScript (D3.js)</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-database"></i> Bases de données</h3>
+                        <ul>
+                            {% for skill in skills_database %}
+                                <li>{{ skill.name }}</li>
+                            {% empty %}
+                                <li>MySQL</li>
+                                <li>PostgreSQL</li>
+                                <li>MongoDB</li>
+                                <li>BigQuery</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-chart-pie"></i> Business Intelligence</h3>
+                        <ul>
+                            {% for skill in skills_bi %}
+                                <li>{{ skill.name }}</li>
+                            {% empty %}
+                                <li>Tableau</li>
+                                <li>Power BI</li>
+                                <li>Looker Studio</li>
+                                <li>Excel avancé</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Projets récents</h2>
+                <div class="projects-grid">
+                    {% for project in projects %}
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="{{ project.image }}" alt="{{ project.title }}">
+                        </div>
+                        <div class="project-content">
+                            <h3>{{ project.title }}</h3>
+                            <p>{{ project.description }}</p>
+                            <div class="project-tags">
+                                {% for tech in project.get_technologies_list %}
+                                    <span>{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="{% static 'placeholder.svg' %}" alt="Dashboard Ventes">
+                        </div>
+                        <div class="project-content">
+                            <h3>Dashboard de ventes interactif</h3>
+                            <p>Création d'un dashboard dynamique pour suivre les performances de ventes en temps réel avec Tableau.</p>
+                            <div class="project-tags">
+                                <span>Tableau</span>
+                                <span>SQL</span>
+                                <span>Python</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Contactez-moi</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Discutons de votre projet</h3>
+                        <p>Je suis disponible pour discuter de vos besoins en analyse de données et vous proposer des solutions adaptées.</p>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>{{ profile.email }}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>{{ profile.phone }}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ profile.location }}</span>
+                            </div>
+                        </div>
+                        <div class="social-links">
+                            {% if profile.linkedin %}
+                                <a href="{{ profile.linkedin }}" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+                            {% endif %}
+                            {% if profile.github %}
+                                <a href="{{ profile.github }}" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                            {% endif %}
+                            {% if profile.twitter %}
+                                <a href="{{ profile.twitter }}" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                            {% if profile.kaggle %}
+                                <a href="{{ profile.kaggle }}" class="social-link" target="_blank"><i class="fab fa-kaggle"></i></a>
+                            {% endif %}
+                            <a href="https://wa.me/223629403019?text=Bonjour%20DELAMOU%20Samaké,%20je%20viens%20de%20votre%20portfolio%20et%20je%20souhaite%20vous%20contacter" class="social-link whatsapp-link" target="_blank">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <form class="contact-form" action="{% url 'contact' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Votre email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="subject" placeholder="Sujet" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer le message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2024 DELAMOU Samaké. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <div id="chat-widget" class="chat-widget">
+        <form id="chat-csrf-form" style="display:none;">
+            {% csrf_token %}
+        </form>
+        <button id="chat-toggle" class="chat-toggle" type="button" aria-label="Ouvrir le chat">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div id="chat-panel" class="chat-panel" aria-hidden="true">
+            <div class="chat-header">
+                <div class="header-info">
+                    <div class="bot-avatar-header">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3>Assistant IA</h3>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span>En ligne</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="chat-close" class="chat-close" type="button" aria-label="Fermer le chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="chat-message bot">
+                    <div class="message-content">
+                        <div class="message-text">
+                            Bonjour ! Je suis l'assistant virtuel de DELAMOU Samaké. Comment puis-je vous aider aujourd'hui ?
+                        </div>
+                        <span class="message-time">À l'instant</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <form id="chat-form" class="chat-form" autocomplete="off">
+                    <div class="input-wrapper">
+                        <input id="chat-input" name="message" type="text" placeholder="Posez votre question..." autocomplete="off" required>
+                    </div>
+                    <button type="submit" class="send-btn" title="Envoyer">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.chatApiUrl = "{% url 'chat_api' %}";
+    </script>
+    <script src="{% static 'home/script.js' %}" defer></script>
+</body>
+</html>

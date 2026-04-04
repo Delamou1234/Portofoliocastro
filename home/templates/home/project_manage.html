@@ -1,0 +1,154 @@
+{% extends 'home/dashboard_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'home/css/dashboard_projects.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Gestion des Projets</h2>
+            <p class="page-subtitle">Créez, modifiez et gérez vos réalisations professionnelles</p>
+        </div>
+        <button class="btn-primary-dashboard" onclick="document.getElementById('add-project-modal').style.display='flex'">
+            <i class="fas fa-plus"></i> Nouveau Projet
+        </button>
+    </div>
+
+    <!-- Statistiques Rapides -->
+    <div class="stats-grid-mini">
+        <div class="stat-card-mini">
+            <div class="stat-icon-mini blue">
+                <i class="fas fa-project-diagram"></i>
+            </div>
+            <div class="stat-info-mini">
+                <span class="stat-label-mini">Total Projets</span>
+                <span class="stat-value-mini">{{ projects.count }}</span>
+            </div>
+        </div>
+        <div class="stat-card-mini">
+            <div class="stat-icon-mini green">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-info-mini">
+                <span class="stat-label-mini">Mis en avant</span>
+                <span class="stat-value-mini">{{ featured_count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des Projets -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3>Liste des projets</h3>
+            <div class="card-actions">
+                <div class="search-box-mini">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Rechercher...">
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Projet</th>
+                        <th>Technos</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <tr>
+                        <td>
+                            <div class="table-item-info">
+                                <div class="item-img">
+                                    {% if project.image %}
+                                        <img src="{{ project.image }}" alt="{{ project.title }}">
+                                    {% else %}
+                                        <div class="img-placeholder"><i class="fas fa-image"></i></div>
+                                    {% endif %}
+                                </div>
+                                <div class="item-text">
+                                    <span class="item-name">{{ project.title }}</span>
+                                    <span class="item-desc">{{ project.description|truncatewords:5 }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="tech-tags">
+                                {% for tech in project.get_technologies_list|slice:":3" %}
+                                    <span class="tech-tag-mini">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td>
+                            {% if project.featured %}
+                                <span class="badge badge-success">En vedette</span>
+                            {% else %}
+                                <span class="badge badge-light">Standard</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ project.created_at|date:'d M Y' }}</td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="{% url 'dashboard_project_edit' project.pk %}" class="action-btn edit" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'dashboard_project_delete' project.pk %}" class="action-btn delete" title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <p>Aucun projet trouvé</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ajout Projet -->
+<div id="add-project-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Ajouter un nouveau projet</h3>
+            <button class="close-modal" onclick="document.getElementById('add-project-modal').style.display='none'">&times;</button>
+        </div>
+        <form method="post" enctype="multipart/form-data" class="modern-form">
+            {% csrf_token %}
+            <div class="form-body">
+                {% for field in form %}
+                    <div class="form-group-modern">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <span class="field-help">{{ field.help_text }}</span>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="field-errors">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="form-footer">
+                <button type="button" class="btn-secondary-dashboard" onclick="document.getElementById('add-project-modal').style.display='none'">Annuler</button>
+                <button type="submit" class="btn-primary-dashboard">Créer le projet</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

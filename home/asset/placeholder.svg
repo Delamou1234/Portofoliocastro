@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="350" viewBox="0 0 500 350" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A90E2"/>
+      <stop offset="100%" stop-color="#764ba2"/>
+    </linearGradient>
+  </defs>
+  <rect width="500" height="350" fill="url(#bg)"/>
+  <rect x="30" y="30" width="440" height="290" rx="24" fill="rgba(255,255,255,0.15)"/>
+  <circle cx="130" cy="140" r="44" fill="rgba(255,255,255,0.4)"/>
+  <rect x="190" y="100" width="220" height="20" rx="10" fill="rgba(255,255,255,0.55)"/>
+  <rect x="190" y="140" width="180" height="20" rx="10" fill="rgba(255,255,255,0.55)"/>
+  <rect x="190" y="180" width="120" height="20" rx="10" fill="rgba(255,255,255,0.55)"/>
+  <text x="50%" y="320" text-anchor="middle" fill="white" font-size="22" font-family="Arial, sans-serif" opacity="0.85">Image locale indisponible</text>
+</svg>

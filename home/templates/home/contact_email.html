@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nouveau message de contact</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f6f8fb; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 24px; background: #ffffff; border-radius: 16px; }
+        .header { background: #4A90E2; color: #ffffff; padding: 20px; border-radius: 16px 16px 0 0; }
+        .header h1 { margin: 0; font-size: 22px; }
+        .content { padding: 24px; color: #2d3748; }
+        .content h2 { margin-top: 0; font-size: 18px; }
+        .label { font-weight: 700; color: #4A90E2; }
+        .field { margin-bottom: 16px; }
+        .message-box { white-space: pre-wrap; background: #f1f5f9; padding: 16px; border-radius: 12px; color: #1f2937; }
+        .footer { margin-top: 24px; font-size: 13px; color: #718096; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nouveau message depuis le portfolio</h1>
+        </div>
+        <div class="content">
+            <div class="field">
+                <div class="label">Nom</div>
+                <div>{{ name }}</div>
+            </div>
+            <div class="field">
+                <div class="label">Email</div>
+                <div>{{ sender_email }}</div>
+            </div>
+            <div class="field">
+                <div class="label">Objet</div>
+                <div>{{ subject }}</div>
+            </div>
+            <div class="field">
+                <div class="label">Message</div>
+                <div class="message-box">{{ message }}</div>
+            </div>
+            <div class="footer">
+                Ce message a été envoyé depuis le formulaire de contact du site de DELAMOU Samaké.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
