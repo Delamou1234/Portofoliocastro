@@ -2,3 +2,9 @@
 __pycache__/
 *.pyc
 .DS_Store
+test_smtp_simple.py
+fix_env.py
+find_gemini_25.py
+db.sqlite3
+media/
+static_root/
