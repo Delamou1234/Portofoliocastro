@@ -1,33 +1,41 @@
-# 📊 Portfolio de DELAMOU Samaké
+# 🎓 Portfolio Doctoral - Dr. Eng. H. Castro
 
-Bienvenue sur le dépôt de mon portfolio professionnel. Je suis un étudiant en Licence 3 d'Informatique à l'Université de Labé (Guinée), passionné par l'**Analyse de Données** et le **Développement Python**.
+Bienvenue sur le dépôt officiel du portfolio professionnel et académique du **Dr. Eng. H. Castro**. Ce projet est une plateforme de présentation de haut niveau dédiée à l'expertise en Statistiques, Intelligence Artificielle, Santé Publique et Changement Climatique.
 
-## 🚀 Fonctionnalités
+## 👤 Profil de l'Expert
 
--   **Dashboard d'Administration** : Gestion complète des projets, compétences et profil.
--   **Assistant IA (Gemini)** : Chatbot intelligent intégré pour répondre aux questions des visiteurs.
--   **Gestion de Projets** : Affichage dynamique des projets avec tags technologiques et liens (GitHub/Démo).
--   **Système de Compétences** : CRUD complet pour gérer les compétences par catégories.
--   **Formulaire de Contact** : Envoi automatique d'emails via SMTP Gmail.
--   **Sécurité** : Gestion robuste des secrets via variables d'environnement (`python-dotenv`).
+**PhD in Statistics & Probability | AI & Machine Learning Expert**
+*Senior Consultant in Public Health, Agriculture, Climate Change & Data Science*
+
+- **Expertise Terrain** : 15+ ans d'expérience internationale.
+- **Recherche** : 50+ Publications scientifiques et 20+ Certifications internationales.
+- **Distinction** : World Top Scientist 2024 (Biostatistique) & Best Researcher Award 2025.
+
+## 🚀 Fonctionnalités Clés
+
+- **Dashboard de Recherche** : Interface d'administration personnalisée pour la gestion des publications et des expertises académiques.
+- **Secrétariat Virtuel (IA)** : Assistant intelligent propulsé par **Gemini 1.5 Pro**, configuré avec une persona doctorale pour orienter les partenaires et clients.
+- **Design Doctoral** : Esthétique sobre et prestigieuse avec typographie serif et système de thèmes (Clair/Sombre).
+- **Gestion des Travaux** : Vitrine dynamique des publications de recherche et des interventions stratégiques.
+- **Communication Sécurisée** : Formulaire de contact direct configuré pour l'adresse officielle de l'expert.
 
 ## 🛠️ Stack Technique
 
--   **Backend** : Django 5.x (Python)
--   **Frontend** : HTML5, CSS3, JavaScript
--   **IA** : Google Gemini API (Modèle : gemini-2.5-flash-lite)
--   **Base de Données** : SQLite (Développement), PostgreSQL (Production ready)
--   **Email** : SMTP Gmail avec mot de passe d'application
+- **Framework** : Django 5.x (Python)
+- **Interface** : HTML5, CSS3 (Variables dynamiques), JavaScript ES6
+- **IA** : Google Gemini API (Flagship Model: gemini-1.5-pro)
+- **Base de Données** : SQLite / PostgreSQL
+- **Déploiement** : Prêt pour la production (Variables d'environnement sécurisées)
 
 ## 📦 Installation et Configuration
 
 ### 1. Cloner le dépôt
 ```bash
-git clone https://github.com/Delamou1234/DataAnalyst.git
-cd DataAnalyst
+git clone https://github.com/Delamou1234/castroHounmenou.git
+cd castroHounmenou
 ```
 
-### 2. Créer un environnement virtuel
+### 2. Environnement Virtuel
 ```bash
 python -m venv venv
 # Windows
@@ -36,38 +44,29 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Installer les dépendances
+### 3. Dépendances
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configuration des variables d'environnement
-Copiez le fichier `.env.example` vers `.env` et remplissez vos informations :
-```bash
-cp .env.example .env
-```
-Assurez-vous de configurer les clés suivantes :
-- `DJANGO_SECRET_KEY`
-- `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD`
-- `GEMINI_API_KEY`
+### 4. Variables d'Environnement
+Créez un fichier `.env` à la racine (voir `.env.example`) :
+- `DJANGO_SECRET_KEY` : Votre clé secrète
+- `EMAIL_HOST_USER` & `EMAIL_HOST_PASSWORD` : Configuration SMTP
+- `GEMINI_API_KEY` : Votre clé API Google AI
+- `ADMIN_EMAIL` : castrohounmenou@gmail.com
 
-### 5. Lancer les migrations
+### 5. Initialisation
 ```bash
 python manage.py migrate
-```
-
-### 6. Démarrer le serveur
-```bash
 python manage.py runserver
 ```
 
-## 🛡️ Sécurité
-Le projet est configuré pour ne **JAMAIS** exposer les fichiers sensibles (`.env`, `db.sqlite3`, scripts de test) sur GitHub grâce à un fichier `.gitignore` optimisé.
-
-## 📧 Contact
-- **Email** : samakedelamou858@gmail.com
-- **LinkedIn** : [Profil LinkedIn](votre-lien-linkedin)
-- **GitHub** : [Delamou1234](https://github.com/Delamou1234)
+## � Contact & Réseaux
+- **Email** : [castrohounmenou@gmail.com](mailto:castrohounmenou@gmail.com)
+- **WhatsApp** : +229 95 30 66 12
+- **GitHub** : [castro2026](https://github.com/castro2026)
+- **LinkedIn** : [Dr. Eng. H. Castro](https://www.linkedin.com/in/castro-g-hounmenou-048aa56b/)
 
 ---
-*Développé avec ❤️ par DELAMOU Samaké*
+*Propulsé par l'excellence académique et l'innovation technologique.*
