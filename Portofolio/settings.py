@@ -166,6 +166,13 @@ GEMINI_API_URL = os.getenv('GEMINI_API_URL', 'https://generativelanguage.googlea
 GEMINI_API_MODEL = os.getenv('GEMINI_API_MODEL', 'gemini-2.0-flash-lite')
 
 # ==============================================================================
+# CONFIGURATION GITHUB
+# ==============================================================================
+
+GITHUB_USERNAME = os.getenv('GITHUB_USERNAME', 'Delamou1234')
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '')
+
+# ==============================================================================
 # SÉCURITÉ (PRODUCTION)
 # ==============================================================================
 

@@ -131,11 +131,54 @@
                                 <p>Clients satisfaits</p>
                             </div>
                         </div>
+
+                        <!-- GitHub Stats Section -->
+                        {% if github_stats %}
+                        <div class="github-stats-container">
+                            <h3 class="github-stats-title"><i class="fab fa-github"></i> Statistiques GitHub</h3>
+                            <div class="github-stats-grid">
+                                <div class="github-stat">
+                                    <span class="github-stat-value">{{ github_stats.repos }}</span>
+                                    <span class="github-stat-label">Repositories</span>
+                                </div>
+                                <div class="github-stat">
+                                    <span class="github-stat-value">{{ github_stats.followers }}</span>
+                                    <span class="github-stat-label">Followers</span>
+                                </div>
+                                <div class="github-stat">
+                                    <span class="github-stat-value">{{ github_stats.following }}</span>
+                                    <span class="github-stat-label">Following</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="about-image">
-                        <img src="{% static 'ia.png' %}" alt="Illustration IA">
+                        <img src="{% static 'home/ia.png' %}" alt="Illustration IA">
                     </div>
                 </div>
+
+                <!-- GitHub Repositories Section -->
+                {% if github_repos %}
+                <div class="github-repos-section">
+                    <h3 class="section-subtitle">Derniers dépôts GitHub</h3>
+                    <div class="github-repos-grid">
+                        {% for repo in github_repos %}
+                        <a href="{{ repo.html_url }}" class="github-repo-card" target="_blank">
+                            <div class="repo-header">
+                                <i class="far fa-folder"></i>
+                                <h4>{{ repo.name }}</h4>
+                            </div>
+                            <p>{{ repo.description|default:"Pas de description disponible." }}</p>
+                            <div class="repo-footer">
+                                <span><i class="fas fa-circle language-dot"></i> {{ repo.language|default:"Misc" }}</span>
+                                <span><i class="far fa-star"></i> {{ repo.stargazers_count }}</span>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </section>
 

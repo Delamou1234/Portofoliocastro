@@ -8,6 +8,54 @@ from django.template.loader import render_to_string
 
 logger = logging.getLogger(__name__)
 
+import logging
+import requests
+from django.conf import settings
+
+logger = logging.getLogger(__name__)
+
+class GitHubService:
+    """Service pour interagir avec l'API GitHub."""
+    
+    def __init__(self):
+        self.username = getattr(settings, 'GITHUB_USERNAME', 'Delamou1234')
+        self.token = getattr(settings, 'GITHUB_TOKEN', '')
+        self.base_url = "https://api.github.com"
+        self.headers = {'Accept': 'application/vnd.github.v3+json'}
+        if self.token:
+            self.headers['Authorization'] = f'token {self.token}'
+
+    def get_user_stats(self):
+        """Récupère les statistiques globales de l'utilisateur."""
+        try:
+            response = requests.get(f"{self.base_url}/users/{self.username}", headers=self.headers, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                return {
+                    'repos': data.get('public_repos', 0),
+                    'followers': data.get('followers', 0),
+                    'following': data.get('following', 0),
+                }
+            return None
+        except Exception as e:
+            logger.error(f"Erreur GitHub stats: {str(e)}")
+            return None
+
+    def get_repositories(self, limit=6):
+        """Récupère les dépôts publics triés par mise à jour."""
+        try:
+            response = requests.get(
+                f"{self.base_url}/users/{self.username}/repos?sort=updated&per_page={limit}",
+                headers=self.headers,
+                timeout=10
+            )
+            if response.status_code == 200:
+                return response.json()
+            return []
+        except Exception as e:
+            logger.error(f"Erreur GitHub repos: {str(e)}")
+            return []
+
 class GeminiService:
     """Service pour interagir avec l'API Gemini de Google."""
     
@@ -21,23 +69,48 @@ class GeminiService:
         return bool(self.api_key)
 
     def get_system_prompt(self):
-        """Retourne le prompt système pour l'assistant."""
-        return (
-            "Tu es un assistant virtuel professionnel qui renseigne les visiteurs sur DELAMOU Samaké, un étudiant passionné en Licence 3 d'Informatique à l'Université de Labé, Guinée. "
-            "Tu dois répondre de manière claire, professionnelle et concise en français.\n\n"
-            "Informations sur DELAMOU Samaké :\n"
-            "- Étudiant en Licence 3 d'Informatique à l'Université de Labé\n"
-            "- Passionné par l'analyse de données et le Data Analysis\n"
-            "- Compétences en développement : Python, SQL, bases en Power BI et Tableau\n"
-            "- Spécialisé en analyse de données, visualisation, apprentissage automatique\n"
-            "- Email: samakedelamou858@gmail.com\n"
-            "- Téléphone: +223 629403019\n"
-            "- Localisation: Labé, Guinée\n"
-            "- GitHub: https://github.com/Delamou1234\n"
-            "- Réalise des projets académiques et personnels en data analysis\n"
-            "- Cherche des opportunités de stage et de collaboration\n\n"
-            "Réponds aux questions des visiteurs sur ses études, ses compétences, ses projets et comment collaborer avec lui."
+        """Retourne le prompt système pour l'assistant avec le maximum d'informations."""
+        from .models import Profile, Project, Skill
+        profile = Profile.objects.first()
+        projects = Project.objects.filter(is_visible=True)
+        skills = Skill.objects.all()
+        
+        # Préparation des données dynamiques
+        projects_info = ""
+        for p in projects:
+            projects_info += f"- {p.title}: {p.description} (Tech: {p.technologies})\n"
+            
+        skills_info = ""
+        for s in skills:
+            skills_info += f"- {s.name} ({s.get_category_display()})\n"
+        
+        bio_text = profile.bio if profile else "Passionné par l'analyse de données."
+        location_text = profile.location if profile else "Labé, Guinée"
+        email_text = profile.email if profile else "samakedelamou858@gmail.com"
+        phone_text = profile.phone if profile else "+223 629403019"
+        
+        prompt = (
+            "Tu es l'assistant virtuel intelligent et chaleureux de DELAMOU Samaké. "
+            "Ton but est de fournir le maximum d'informations pertinentes aux visiteurs sur son profil, ses compétences et ses réalisations.\n\n"
+            "IDENTITÉ ET CONTACT :\n"
+            f"- Nom complet : {profile.full_name if profile else 'DELAMOU Samaké'}\n"
+            f"- Titre : {profile.title if profile else 'Data Analyst'}\n"
+            f"- Bio : {bio_text}\n"
+            f"- Localisation : {location_text}\n"
+            f"- Email : {email_text}\n"
+            f"- Téléphone/WhatsApp : {phone_text}\n"
+            f"- Expérience : {profile.years_experience if profile else '1'} an(s)\n\n"
+            "COMPÉTENCES TECHNIQUES :\n"
+            f"{skills_info if skills_info else '- Python, SQL, Power BI, Tableau, Analyse de données'}\n\n"
+            "PROJETS RÉALISÉS :\n"
+            f"{projects_info if projects_info else '- Divers projets en Data Analysis et Visualisation'}\n\n"
+            "RÈGLES DE RÉPONSE :\n"
+            "1. Sois très précis et donne des détails basés sur les infos ci-dessus.\n"
+            "2. Si un visiteur pose une question sur un projet, explique ce qu'il a fait.\n"
+            "3. Encourage toujours le visiteur à contacter Samaké via le formulaire ou WhatsApp.\n"
+            "4. Réponds toujours en français de manière professionnelle mais accessible."
         )
+        return prompt
 
     def generate_response(self, user_message):
         """Envoie une requête à l'API Gemini et retourne la réponse texte."""

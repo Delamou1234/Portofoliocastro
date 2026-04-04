@@ -13,7 +13,7 @@ from django.templatetags.static import static
 
 from .models import Profile, Project, Skill, ContactMessage, Testimonial, ChatMessage
 from .forms import ProfileForm, ProjectForm, SkillForm
-from .services import send_contact_email, GeminiService
+from .services import send_contact_email, GeminiService, GitHubService
 
 
 def index(request):
@@ -42,9 +42,14 @@ def index(request):
 
     def resolve_image_url(value, use_fallback=False):
         if not value or 'via.placeholder.com' in value:
-            return 'https://source.unsplash.com/featured/?artificial-intelligence,data' if use_fallback else static('placeholder.svg')
+            return 'https://source.unsplash.com/featured/?artificial-intelligence,data' if use_fallback else static('home/placeholder.svg')
         if not urlparse(value).scheme:
-            return static(value)
+            # Vérifier si l'image est dans media ou static
+            import os
+            from django.conf import settings
+            if os.path.exists(os.path.join(settings.MEDIA_ROOT, value)):
+                return settings.MEDIA_URL + value
+            return static('home/' + value)
         return value
 
     profile_image_url = resolve_image_url(profile.profile_image, use_fallback=True)
@@ -54,6 +59,11 @@ def index(request):
         testimonial.client_image = resolve_image_url(testimonial.client_image)
 
     project_count = Project.objects.count()
+
+    # Statistiques GitHub
+    github_service = GitHubService()
+    github_stats = github_service.get_user_stats()
+    github_repos = github_service.get_repositories(limit=3)
 
     context = {
         'profile': profile,
@@ -65,6 +75,8 @@ def index(request):
         'testimonials': testimonials,
         'profile_image_url': profile_image_url,
         'project_count': project_count,
+        'github_stats': github_stats,
+        'github_repos': github_repos,
     }
 
     return render(request, 'home/index.html', context)

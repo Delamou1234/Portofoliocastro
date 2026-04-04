@@ -254,6 +254,10 @@ const chatMessages = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
 const chatWidget = document.getElementById('chat-widget');
 
+let isProcessingMessage = false;
+let lastMessageTime = 0;
+const MIN_MESSAGE_INTERVAL = 2000; // 2 secondes entre les messages
+
 // Draggable chat widget
 let isDragging = false;
 let dragOffsetX = 0;
@@ -446,12 +450,27 @@ async function sendChatMessage(message) {
 if (chatForm) {
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        const now = Date.now();
+        if (isProcessingMessage) {
+            showNotification('Veuillez attendre la réponse de l\'assistant.', 'info');
+            return;
+        }
+        
+        if (now - lastMessageTime < MIN_MESSAGE_INTERVAL) {
+            showNotification('Veuillez ne pas envoyer de messages trop rapidement.', 'warning');
+            return;
+        }
+
         const message = chatInput.value.trim();
         if (!message) {
             showNotification('Écris une question avant d\'envoyer.', 'error');
             return;
         }
 
+        isProcessingMessage = true;
+        lastMessageTime = now;
+        
         addChatMessage(message, 'visitor');
         chatInput.value = '';
         const loadingMessage = addChatMessage('...', 'bot');
@@ -468,6 +487,8 @@ if (chatForm) {
             loadingMessage.remove();
             addChatMessage('Impossible de contacter le service de chat pour le moment.', 'bot');
             console.error(error);
+        } finally {
+            isProcessingMessage = false;
         }
     });
 }
