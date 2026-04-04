@@ -96,9 +96,8 @@ def contact(request):
             except Exception as e:
                 import logging
                 logger = logging.getLogger(__name__)
-                logger.error(f"Erreur d'envoi d'email : {str(e)}")
-                # Message plus court pour éviter les problèmes d'affichage
-                messages.error(request, "Erreur d'envoi. Veuillez réessayer plus tard.")
+                logger.error(f"ERREUR CRITIQUE SMTP : {str(e)}", exc_info=True)
+                messages.error(request, "Désolé, une erreur technique est survenue lors de l'envoi. Veuillez réessayer plus tard.")
         else:
             messages.error(request, 'Veuillez remplir tous les champs.')
 

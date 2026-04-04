@@ -10,14 +10,24 @@
 </head>
 <body>
     {% if messages %}
-    <div class="messages">
+    <div id="django-messages" style="display: none;">
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
+            <div class="django-message" data-level="{{ message.tags }}">{{ message|escapejs }}</div>
         {% endfor %}
     </div>
-{% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageElements = document.querySelectorAll('.django-message');
+            messageElements.forEach(el => {
+                const message = el.textContent;
+                const level = el.dataset.level;
+                if (typeof showNotification === 'function') {
+                    showNotification(message, level);
+                }
+            });
+        });
+    </script>
+    {% endif %}
 <header class="navbar">
         <div class="nav-container">
             <div class="logo">

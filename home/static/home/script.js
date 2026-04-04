@@ -191,50 +191,58 @@ function isValidEmail(email) {
 
 // Notification System
 function showNotification(message, type = 'info') {
-    const existingNotification = document.querySelector('.notification');
-    if (existingNotification) {
-        existingNotification.remove();
-    }
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(n => n.remove());
     
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
-    notification.textContent = message;
+    
+    const icon = document.createElement('i');
+    if (type === 'success') icon.className = 'fas fa-check-circle';
+    else if (type === 'error') icon.className = 'fas fa-exclamation-circle';
+    else icon.className = 'fas fa-info-circle';
+    
+    const text = document.createElement('span');
+    text.textContent = message;
+    
+    notification.appendChild(icon);
+    notification.appendChild(text);
     
     notification.style.cssText = `
         position: fixed;
-        top: 20px;
-        right: 20px;
+        bottom: 30px;
+        right: 30px;
         padding: 1rem 1.5rem;
-        border-radius: 10px;
+        border-radius: 12px;
         color: white;
-        font-weight: 500;
+        font-weight: 600;
         z-index: 10000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        max-width: 300px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        max-width: 400px;
     `;
     
-    switch (type) {
-        case 'success':
-            notification.style.background = '#28a745';
-            break;
-        case 'error':
-            notification.style.background = '#dc3545';
-            break;
-        default:
-            notification.style.background = '#4A90E2';
-    }
+    if (type === 'success') notification.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+    else if (type === 'error') notification.style.background = 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)';
+    else notification.style.background = 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)';
     
     document.body.appendChild(notification);
     
     requestAnimationFrame(() => {
-        notification.style.transform = 'translateX(0)';
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
     });
     
     setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
-        notification.addEventListener('transitionend', () => notification.remove());
-    }, 3000);
+        notification.style.transform = 'translateY(100px)';
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 400);
+    }, 5000);
 }
 
 // Chat widget logic
