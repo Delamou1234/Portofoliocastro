@@ -155,21 +155,21 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', '')
-ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', EMAIL_HOST_USER)
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'castrohounmenou@gmail.com')
 
 # ==============================================================================
 # API GEMINI (ASSISTANT AI)
 # ==============================================================================
 
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'AIzaSyDRtxLFh-arsI4IWPw5TMSsvOEbIfL5Jz4')
 GEMINI_API_URL = os.getenv('GEMINI_API_URL', 'https://generativelanguage.googleapis.com/v1beta/models')
-GEMINI_API_MODEL = os.getenv('GEMINI_API_MODEL', 'gemini-2.0-flash-lite')
+GEMINI_API_MODEL = os.getenv('GEMINI_API_MODEL', 'gemini-2.5-flash')
 
 # ==============================================================================
 # CONFIGURATION GITHUB
 # ==============================================================================
 
-GITHUB_USERNAME = os.getenv('GITHUB_USERNAME', 'Delamou1234')
+GITHUB_USERNAME = os.getenv('GITHUB_USERNAME', 'castro2026')
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '')
 
 # ==============================================================================
@@ -235,6 +235,13 @@ LOGGING = {
         },
     },
 }
+
+# ==============================================================================
+# AUTHENTICATION REDIRECTS
+# ==============================================================================
+
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'home'
 
 # ==============================================================================
 # DEFAULT AUTO FIELD

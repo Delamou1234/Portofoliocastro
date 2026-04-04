@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion | Portfolio Admin</title>
+    <title>Connexion | Espace Expert Dr. Castro</title>
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --primary: #004a99; /* Trust Blue */
+            --primary-hover: #002d5a;
             --dark: #0f172a;
             --slate: #64748b;
             --light: #f8fafc;
@@ -65,7 +65,7 @@
         .image-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
+            background: linear-gradient(135deg, rgba(0, 74, 153, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
         }
 
         .overlay-content {
@@ -135,7 +135,7 @@
             font-size: 24px;
             font-weight: 800;
             margin-bottom: 32px;
-            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 74, 153, 0.3);
         }
 
         .login-title {
@@ -194,7 +194,7 @@
             outline: none;
             background: white;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 74, 153, 0.1);
         }
 
         .form-input:focus + i {
@@ -212,14 +212,14 @@
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 74, 153, 0.3);
             margin-top: 12px;
         }
 
         .login-button:hover {
             background: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(0, 74, 153, 0.4);
         }
 
         .login-button:active {
@@ -285,18 +285,18 @@
             <img src="https://images.unsplash.com/photo-1551288049-bbbda536339a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Background">
             <div class="image-overlay"></div>
             <div class="overlay-content">
-                <span class="badge-admin">Administration</span>
-                <h1>Gérez votre présence numérique.</h1>
-                <p>Bienvenue dans votre espace sécurisé. Connectez-vous pour mettre à jour vos projets et gérer votre portfolio.</p>
+                <span class="badge-admin">Portail de Recherche</span>
+                <h1>Gestion de l'expertise doctorale.</h1>
+                <p>Accès sécurisé réservé au Dr. Eng. H. Castro. Connectez-vous pour administrer vos publications et vos interventions stratégiques.</p>
             </div>
         </div>
 
         <!-- Form Side -->
         <div class="login-side-form">
             <div class="form-container">
-                <div class="brand-logo">DS</div>
-                <h2 class="login-title">Bon retour !</h2>
-                <p class="login-subtitle">Veuillez entrer vos identifiants.</p>
+                <div class="brand-logo"><i class="fas fa-graduation-cap"></i></div>
+                <h2 class="login-title">Authentification</h2>
+                <p class="login-subtitle">Espace sécurisé Dr. Castro</p>
 
                 {% if form.errors %}
                 <div class="alert-error">
@@ -316,7 +316,7 @@
                     <div class="form-group">
                         <label class="form-label" for="id_username">Nom d'utilisateur</label>
                         <div class="input-wrapper">
-                            <input type="text" name="username" id="id_username" class="form-input" placeholder="ex: delamou_admin" required autofocus>
+                            <input type="text" name="username" id="id_username" class="form-input" placeholder="Identifiant expert" required autofocus>
                             <i class="fa-solid fa-user"></i>
                         </div>
                     </div>

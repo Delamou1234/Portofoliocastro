@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DELAMOU Samaké - Data Analyst Portfolio</title>
+    <title>Dr. Eng. H. Castro - PhD in Statistics & AI | AI & Machine Learning Expert</title>
     <link rel="stylesheet" href="{% static 'home/style.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -32,16 +32,16 @@
         <div class="nav-container">
             <div class="logo">
                 <a href="{% url 'home' %}" class="logo-container">
-                    <img src="{% static 'home/guinea-flag.svg' %}" alt="Drapeau de la Guinée">
+                    <img src="{% static 'home/benin-flag.svg' %}" alt="Drapeau du Bénin">
                     <span class="logo-text">PORTFOLIO</span>
                 </a>
             </div>
             <nav class="nav-menu">
                 <ul>
                     <li><a href="#home" class="nav-link active">Accueil</a></li>
-                    <li><a href="#about" class="nav-link">À propos</a></li>
-                    <li><a href="#skills" class="nav-link">Compétences</a></li>
-                    <li><a href="#projects" class="nav-link">Projets</a></li>
+                    <li><a href="#about" class="nav-link">Expertise</a></li>
+                    <li><a href="#skills" class="nav-link">Recherche</a></li>
+                    <li><a href="#projects" class="nav-link">Publications</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                     <li class="nav-auth">
                         {% if user.is_authenticated %}
@@ -70,14 +70,14 @@
                 <div class="hero-content">
                     <div class="hero-text">
                         <h1 class="welcome-text">Bienvenue</h1>
-                        <h2 class="hero-title">Je suis <span class="highlight">{{ profile.full_name }}</span></h2>
+                        <h2 class="hero-title">Je suis le <span class="highlight">{{ profile.full_name }}</span></h2>
                         <h3 class="hero-subtitle">{{ profile.title }}</h3>
                         <p class="hero-description">
                             {{ profile.bio }}
                         </p>
                         <div class="hero-buttons">
-                            <a href="#contact" class="btn btn-primary">M'engager</a>
-                            <a href="#projects" class="btn btn-secondary">Voir mes projets</a>
+                            <a href="#contact" class="btn btn-primary">Solliciter une Expertise</a>
+                            <a href="#projects" class="btn btn-secondary">Consulter les Travaux</a>
                         </div>
                     </div>
                     <div class="hero-image">
@@ -87,8 +87,8 @@
                                 <div class="floating-icon brain-icon">
                                     <i class="fas fa-brain"></i>
                                 </div>
-                                <div class="floating-badge">
-                                    <span>"La Data raconte une histoire"</span>
+                                <div class="floating-badge" style="background: var(--primary-color);">
+                                    <span>"Transformer l'incertitude en expertise décisionnelle"</span>
                                 </div>
                                 <div class="floating-counter">
                                     <span class="counter-number">{{ project_count }}+</span>
@@ -106,85 +106,54 @@
 
         <section id="about" class="about">
             <div class="container">
-                <h2 class="section-title">À propos de moi</h2>
+                <h2 class="section-title">Parcours & Expertise</h2>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>
-                            En tant que Data Analyst, je transforme les données brutes en informations exploitables. 
-                            Mon expertise couvre l'ensemble du pipeline d'analyse de données, de la collecte à la visualisation.
-                        </p>
-                        <p>
-                            Je suis spécialisé dans l'utilisation d'outils modernes comme Python, SQL, et des plateformes de 
-                            Business Intelligence pour créer des tableaux de bord interactifs et des rapports détaillés.
+                        <p style="font-size: 1.2rem; line-height: 1.8; color: #2d3748; margin-bottom: 2rem; border-left: 3px solid #2c5282; padding-left: 1.5rem;">
+                            {{ profile.bio }}
                         </p>
                         <div class="about-stats">
                             <div class="stat-item">
                                 <h3>{{ profile.years_experience }}+</h3>
-                                <p>Années d'expérience</p>
+                                <p>Années d'expertise</p>
                             </div>
                             <div class="stat-item">
-                                <h3>{{ project_count }}+</h3>
-                                <p>Projets réalisés</p>
+                                <h3>50+</h3>
+                                <p>Publications</p>
                             </div>
                             <div class="stat-item">
-                                <h3>{{ profile.clients_count }}+</h3>
-                                <p>Clients satisfaits</p>
+                                <h3>20+</h3>
+                                <p>Certifications</p>
                             </div>
                         </div>
 
-                        <!-- GitHub Stats Section -->
-                        {% if github_stats %}
-                        <div class="github-stats-container">
-                            <h3 class="github-stats-title"><i class="fab fa-github"></i> Statistiques GitHub</h3>
-                            <div class="github-stats-grid">
-                                <div class="github-stat">
-                                    <span class="github-stat-value">{{ github_stats.repos }}</span>
-                                    <span class="github-stat-label">Repositories</span>
-                                </div>
-                                <div class="github-stat">
-                                    <span class="github-stat-value">{{ github_stats.followers }}</span>
-                                    <span class="github-stat-label">Followers</span>
-                                </div>
-                                <div class="github-stat">
-                                    <span class="github-stat-value">{{ github_stats.following }}</span>
-                                    <span class="github-stat-label">Following</span>
-                                </div>
-                            </div>
+                        <div class="distinctions-section" style="margin-top: 2rem;">
+                            <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-award"></i> Distinctions Récentes</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 0.5rem;">🏆 <strong>World Top Scientist 2024</strong> (Catégorie Biostatistique) pour l'excellence de ses travaux de recherche.</li>
+                                <li style="margin-bottom: 0.5rem;">🏆 <strong>Best Researcher Award 2025</strong> en modélisation des maladies (Global Diseases Research).</li>
+                            </ul>
                         </div>
-                        {% endif %}
+
+                        <div class="hybrid-asset" style="margin-top: 2rem; padding: 1.5rem; background: rgba(var(--primary-rgb), 0.1); border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                            <h3 style="margin-bottom: 0.5rem;">L'atout "Hybride"</h3>
+                            <p style="font-style: italic;">
+                                Mon parcours unique — alliant Ingénierie, Psychologie et Statistiques — me permet de voir au-delà des chiffres. 
+                                Je comprends les comportements humains et les contextes socio-économiques qui définissent la donnée, 
+                                garantissant que les solutions techniques se traduisent par un impact réel et durable sur le terrain.
+                            </p>
+                        </div>
                     </div>
                     <div class="about-image">
                         <img src="{% static 'home/ia.png' %}" alt="Illustration IA">
                     </div>
                 </div>
-
-                <!-- GitHub Repositories Section -->
-                {% if github_repos %}
-                <div class="github-repos-section">
-                    <h3 class="section-subtitle">Derniers dépôts GitHub</h3>
-                    <div class="github-repos-grid">
-                        {% for repo in github_repos %}
-                        <a href="{{ repo.html_url }}" class="github-repo-card" target="_blank">
-                            <div class="repo-header">
-                                <i class="far fa-folder"></i>
-                                <h4>{{ repo.name }}</h4>
-                            </div>
-                            <p>{{ repo.description|default:"Pas de description disponible." }}</p>
-                            <div class="repo-footer">
-                                <span><i class="fas fa-circle language-dot"></i> {{ repo.language|default:"Misc" }}</span>
-                                <span><i class="far fa-star"></i> {{ repo.stargazers_count }}</span>
-                            </div>
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </section>
 
         <section id="skills" class="skills">
             <div class="container">
-                <h2 class="section-title">Compétences</h2>
+                <h2 class="section-title">Domaines de Recherche & Expertise</h2>
                 <div class="skills-grid">
                     <div class="skill-category">
                         <h3><i class="fas fa-chart-line"></i> Analyse de données</h3>
@@ -244,7 +213,7 @@
 
         <section id="projects" class="projects">
             <div class="container">
-                <h2 class="section-title">Projets récents</h2>
+                <h2 class="section-title">Publications & Travaux de Recherche</h2>
                 <div class="projects-grid">
                     {% for project in projects %}
                     <div class="project-card">
@@ -329,7 +298,7 @@
                             {% if profile.kaggle %}
                                 <a href="{{ profile.kaggle }}" class="social-link" target="_blank"><i class="fab fa-kaggle"></i></a>
                             {% endif %}
-                            <a href="https://wa.me/223629403019?text=Bonjour%20DELAMOU%20Samaké,%20je%20viens%20de%20votre%20portfolio%20et%20je%20souhaite%20vous%20contacter" class="social-link whatsapp-link" target="_blank">
+                            <a href="https://wa.me/22995306612?text=Bonjour%20Dr.%20Eng.%20H.%20Castro,%20je%20viens%20de%20votre%20portfolio%20et%20je%20souhaite%20vous%20solliciter%20pour%20une%20expertise" class="social-link whatsapp-link" target="_blank">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -357,7 +326,33 @@
 
     <footer class="footer">
         <div class="container footer-content">
-            <p>&copy; 2024 DELAMOU Samaké. Tous droits réservés.</p>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo-container">
+                        <img src="{% static 'home/benin-flag.svg' %}" alt="Drapeau du Bénin">
+                        <span class="logo-text">PORTFOLIO</span>
+                    </div>
+                    <p class="footer-tagline">Transformer l'incertitude en expertise décisionnelle.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#home">Accueil</a></li>
+                        <li><a href="#about">Expertise</a></li>
+                        <li><a href="#skills">Recherche</a></li>
+                        <li><a href="#projects">Publications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Expertise</h4>
+                    <p><i class="fas fa-envelope"></i> castrohounmenou@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +229 95 30 66 12</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Dr. Eng. H. Castro. Tous droits réservés.</p>
+                <p class="academic-note">Senior Consultant in Public Health, Agriculture & Data Science</p>
+            </div>
         </div>
     </footer>
 
@@ -365,20 +360,20 @@
         <form id="chat-csrf-form" style="display:none;">
             {% csrf_token %}
         </form>
-        <button id="chat-toggle" class="chat-toggle" type="button" aria-label="Ouvrir le chat">
-            <i class="fas fa-robot"></i>
+        <button id="chat-toggle" class="chat-toggle" type="button" aria-label="Ouvrir le secrétariat" style="background: var(--primary-color);">
+            <i class="fas fa-user-tie"></i>
         </button>
         <div id="chat-panel" class="chat-panel" aria-hidden="true">
             <div class="chat-header">
                 <div class="header-info">
-                    <div class="bot-avatar-header">
-                        <i class="fas fa-robot"></i>
+                    <div class="bot-avatar-header" style="background: var(--primary-color); color: white;">
+                        <i class="fas fa-user-tie"></i>
                     </div>
                     <div>
-                        <h3>Assistant IA</h3>
+                        <h3>Secrétariat du Dr. Castro</h3>
                         <div class="status-indicator">
                             <span class="status-dot"></span>
-                            <span>En ligne</span>
+                            <span>Assistant Virtuel</span>
                         </div>
                     </div>
                 </div>
@@ -390,7 +385,7 @@
                 <div class="chat-message bot">
                     <div class="message-content">
                         <div class="message-text">
-                            Bonjour ! Je suis l'assistant virtuel de DELAMOU Samaké. Comment puis-je vous aider aujourd'hui ?
+                            Bienvenue. Je suis l'assistant de recherche du Dr. Eng. H. Castro. Comment puis-je vous assister dans vos recherches ou demandes de collaboration aujourd'hui ?
                         </div>
                         <span class="message-time">À l'instant</span>
                     </div>

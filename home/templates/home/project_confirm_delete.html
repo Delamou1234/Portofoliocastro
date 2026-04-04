@@ -1,7 +1,7 @@
 {% extends 'home/dashboard_base.html' %}
 {% load static %}
 
-{% block title %}Supprimer le Projet{% endblock %}
+{% block title %}Supprimer la Recherche{% endblock %}
 {% block header_title %}Confirmation de suppression{% endblock %}
 
 {% block extra_css %}
@@ -82,10 +82,10 @@
     <div class="delete-icon">
         <i class="fas fa-exclamation-triangle"></i>
     </div>
-    <h3 class="delete-title">Supprimer le projet ?</h3>
+    <h3 class="delete-title">Supprimer la recherche ?</h3>
     <p class="delete-text">
-        Êtes-vous sûr de vouloir supprimer le projet <strong>"{{ project.title }}"</strong> ?<br>
-        Cette action est irréversible.
+        Êtes-vous sûr de vouloir supprimer la recherche <strong>"{{ project.title }}"</strong> ?<br>
+        Cette action est irréversible et retirera la publication du portfolio.
     </p>
     <form method="post" class="delete-actions">
         {% csrf_token %}

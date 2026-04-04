@@ -1,8 +1,8 @@
 {% extends 'home/dashboard_base.html' %}
 {% load static %}
 
-{% block title %}Tableau de Bord{% endblock %}
-{% block header_title %}Vue d'ensemble{% endblock %}
+{% block title %}Vue d'ensemble | Espace Expert Dr. Castro{% endblock %}
+{% block header_title %}Expertise & Recherche - Overview{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'home/css/dashboard_main.css' %}">
@@ -14,21 +14,21 @@
     <div class="kpi-header">
         <div class="kpi-card primary">
             <div class="kpi-icon">
-                <i class="fas fa-briefcase"></i>
+                <i class="fas fa-microscope"></i>
             </div>
             <div class="kpi-content">
                 <span class="kpi-value">{{ project_count }}</span>
-                <span class="kpi-label">Projets créés</span>
+                <span class="kpi-label">Recherches & Travaux</span>
                 <span class="kpi-change positive">{{ growth_projects }}</span>
             </div>
         </div>
         <div class="kpi-card secondary">
             <div class="kpi-icon">
-                <i class="fas fa-code"></i>
+                <i class="fas fa-graduation-cap"></i>
             </div>
             <div class="kpi-content">
                 <span class="kpi-value">{{ skill_count }}</span>
-                <span class="kpi-label">Compétences</span>
+                <span class="kpi-label">Expertises Académiques</span>
                 <span class="kpi-change positive">{{ growth_skills }}</span>
             </div>
         </div>
@@ -44,12 +44,12 @@
         </div>
         <div class="kpi-card warning">
             <div class="kpi-icon">
-                <i class="fas fa-star"></i>
+                <i class="fas fa-award"></i>
             </div>
             <div class="kpi-content">
                 <span class="kpi-value">{{ featured_count }}</span>
-                <span class="kpi-label">Projets en vedette</span>
-                <span class="kpi-change positive">Mis en avant</span>
+                <span class="kpi-label">Publications Majeures</span>
+                <span class="kpi-change positive">Haut Impact</span>
             </div>
         </div>
     </div>
@@ -59,9 +59,9 @@
         <div class="dashboard-column">
             <div class="dashboard-card">
                 <div class="card-header-modern">
-                    <h3>Projets récents</h3>
+                    <h3>Travaux de Recherche Récents</h3>
                     <button class="btn-primary-dashboard" data-url="{% url 'dashboard_projects' %}">
-                        <i class="fas fa-plus"></i> Nouveau projet
+                        <i class="fas fa-plus"></i> Nouvelle Recherche
                     </button>
                 </div>
                 
@@ -100,7 +100,7 @@
                 
                 <div class="card-footer-modern" style="padding: 20px; text-align: center; border-top: 1px solid #f1f5f9;">
                     <a href="{% url 'dashboard_projects' %}" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 14px;">
-                        Voir tous les projets <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                        Consulter l'ensemble des publications <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
                     </a>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                         </div>
                         <div class="stat-info">
                             <span class="stat-number">{{ project_count }}</span>
-                            <span class="stat-label">Total projets</span>
+                            <span class="stat-label">Total travaux</span>
                         </div>
                     </div>
                     <div class="stat-item-modern">
@@ -189,9 +189,9 @@
             data: {
                 labels: daysLabels,
                 datasets: [{
-                    label: 'Projets ajoutés',
+                    label: 'Recherches publiées',
                     data: dailyActivity,
-                    borderColor: '#6366f1',
+                    borderColor: '#004a99',
                     borderWidth: 3,
                     backgroundColor: gradient,
                     fill: true,

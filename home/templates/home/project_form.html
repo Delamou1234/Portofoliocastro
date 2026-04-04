@@ -1,8 +1,8 @@
 {% extends 'home/dashboard_base.html' %}
 {% load static %}
 
-{% block title %}Modifier le Projet{% endblock %}
-{% block header_title %}Modifier Projet{% endblock %}
+{% block title %}Modifier la Recherche{% endblock %}
+{% block header_title %}Modifier Recherche{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -82,6 +82,7 @@
 <div class="form-card">
     <div class="form-header">
         <h3 style="font-size: 20px; font-weight: 800;">Modifier : {{ project.title }}</h3>
+        <p style="color: var(--secondary); margin-top: 4px;">Mise à jour des travaux de recherche scientifique</p>
     </div>
     <form method="post" enctype="multipart/form-data" class="form-body">
         {% csrf_token %}

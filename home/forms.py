@@ -40,6 +40,15 @@ class ProjectForm(forms.ModelForm):
             'featured',
             'is_visible',
         ]
+        labels = {
+            'title': 'Titre de la Recherche/Publication',
+            'description': 'Résumé/Description',
+            'technologies': 'Domaines d\'expertise (séparés par des virgules)',
+            'project_url': 'Lien vers la Publication (DOI, PDF, etc.)',
+            'github_url': 'Lien vers les Données/Code',
+            'featured': 'Mettre en avant',
+            'is_visible': 'Afficher sur le site',
+        }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }

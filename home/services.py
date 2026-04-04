@@ -78,37 +78,36 @@ class GeminiService:
         # Préparation des données dynamiques
         projects_info = ""
         for p in projects:
-            projects_info += f"- {p.title}: {p.description} (Tech: {p.technologies})\n"
+            projects_info += f"- {p.title}: {p.description} (Expertise: {p.technologies})\n"
             
         skills_info = ""
         for s in skills:
             skills_info += f"- {s.name} ({s.get_category_display()})\n"
         
-        bio_text = profile.bio if profile else "Passionné par l'analyse de données."
-        location_text = profile.location if profile else "Labé, Guinée"
-        email_text = profile.email if profile else "samakedelamou858@gmail.com"
-        phone_text = profile.phone if profile else "+223 629403019"
+        bio_text = profile.bio if profile else "Expert en Statistiques et IA."
+        location_text = profile.location if profile else "Bénin"
+        email_text = profile.email if profile else "castrohounmenou@gmail.com"
+        phone_text = profile.phone if profile else "+229 XX XX XX XX"
         
         prompt = (
-            "Tu es l'assistant virtuel intelligent et chaleureux de DELAMOU Samaké. "
-            "Ton but est de fournir le maximum d'informations pertinentes aux visiteurs sur son profil, ses compétences et ses réalisations.\n\n"
-            "IDENTITÉ ET CONTACT :\n"
-            f"- Nom complet : {profile.full_name if profile else 'DELAMOU Samaké'}\n"
-            f"- Titre : {profile.title if profile else 'Data Analyst'}\n"
-            f"- Bio : {bio_text}\n"
+            f"Tu es l'assistant de recherche et consultant virtuel du {profile.full_name if profile else 'Dr. Eng. H. Castro'}. "
+            "Ton rôle est d'assister les partenaires, chercheurs et clients potentiels en fournissant des informations précises sur ses travaux de recherche, ses publications et son expertise senior.\n\n"
+            "PROFIL ACADÉMIQUE ET PROFESSIONNEL :\n"
+            f"- Nom complet : {profile.full_name if profile else 'Dr. Eng. H. Castro'}\n"
+            f"- Titre : {profile.title if profile else 'PhD in Statistics & Probability | AI Expert'}\n"
+            f"- Expertise : {bio_text}\n"
             f"- Localisation : {location_text}\n"
-            f"- Email : {email_text}\n"
-            f"- Téléphone/WhatsApp : {phone_text}\n"
-            f"- Expérience : {profile.years_experience if profile else '1'} an(s)\n\n"
-            "COMPÉTENCES TECHNIQUES :\n"
-            f"{skills_info if skills_info else '- Python, SQL, Power BI, Tableau, Analyse de données'}\n\n"
-            "PROJETS RÉALISÉS :\n"
-            f"{projects_info if projects_info else '- Divers projets en Data Analysis et Visualisation'}\n\n"
-            "RÈGLES DE RÉPONSE :\n"
-            "1. Sois très précis et donne des détails basés sur les infos ci-dessus.\n"
-            "2. Si un visiteur pose une question sur un projet, explique ce qu'il a fait.\n"
-            "3. Encourage toujours le visiteur à contacter Samaké via le formulaire ou WhatsApp.\n"
-            "4. Réponds toujours en français de manière professionnelle mais accessible."
+            f"- Contact : {email_text} | {phone_text}\n"
+            f"- Expérience : {profile.years_experience if profile else '15'}+ ans d'expertise terrain\n\n"
+            "DOMAINES DE RECHERCHE :\n"
+            f"{skills_info if skills_info else '- Modélisation Avancée, Biostatistique, IA, SIG'}\n\n"
+            "PUBLICATIONS ET TRAVAUX :\n"
+            f"{projects_info if projects_info else '- Plus de 50 publications internationales en santé et climat'}\n\n"
+            "DIRECTIVES DE COMMUNICATION :\n"
+            "1. Adopte un ton formel, professionnel et académique (utilise le 'Vous').\n"
+            "2. Valorise l'impact social et environnemental des travaux du Docteur.\n"
+            "3. Oriente les demandes de collaboration vers l'email direct ou le formulaire.\n"
+            "4. Réponds toujours en français de manière concise et structurée."
         )
         return prompt
 
@@ -116,24 +115,23 @@ class GeminiService:
         """Envoie une requête à l'API Gemini et retourne la réponse texte."""
         if not self.is_configured():
             return (
-                "Bonjour ! Je suis l'assistant virtuel de DELAMOU Samaké. "
-                "Le service intelligent n'est pas encore activé. "
-                "Vous pouvez contacter DELAMOU directement à samakedelamou858@gmail.com."
+                f"Bonjour. Je suis l'assistant du {Profile.objects.first().full_name if Profile.objects.first() else 'Dr. Eng. H. Castro'}. "
+                "Le module d'intelligence artificielle est en cours de maintenance. "
+                "Pour toute demande urgente ou collaboration, veuillez envoyer un courriel à castrohounmenou@gmail.com."
             )
 
-        full_url = f"{self.api_url}/{self.api_model}:generateContent?key={self.api_key}"
+        # Ensure model name is correct for the API endpoint
+        model_name = self.api_model if self.api_model.startswith('models/') else f"models/{self.api_model}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/{model_name}:generateContent?key={self.api_key}"
         
         request_payload = {
             'contents': [
                 {
-                    'role': 'user',
                     'parts': [{'text': f"{self.get_system_prompt()}\n\nQuestion du visiteur: {user_message}"}]
                 }
             ],
             'generationConfig': {
                 'temperature': 0.7,
-                'topK': 40,
-                'topP': 0.95,
                 'maxOutputTokens': 1024,
             }
         }
@@ -141,41 +139,19 @@ class GeminiService:
         try:
             data = json.dumps(request_payload).encode('utf-8')
             req = urllib.request.Request(
-                full_url,
+                url,
                 data=data,
                 headers={'Content-Type': 'application/json'},
             )
             
             with urllib.request.urlopen(req, timeout=30) as response:
                 result = json.loads(response.read().decode('utf-8'))
-                
-                # Vérifier si l'API retourne une erreur dans le corps de la réponse
-                if 'error' in result:
-                    error_info = result['error']
-                    error_code = error_info.get('code', 'unknown')
-                    error_message = error_info.get('message', 'Erreur inconnue')
-                    logger.error(f"Erreur API Gemini (code {error_code}): {error_message}")
-                    
-                    if error_code == 403:
-                        return (
-                            "Bonjour ! Je suis l'assistant virtuel de DELAMOU Samaké. "
-                            "Le service intelligent n'est pas correctement configuré. "
-                            "Veuillez contacter DELAMOU à samakedelamou858@gmail.com."
-                        )
-                    return "Une erreur est survenue lors de la communication avec l'IA. Veuillez réessayer."
-                
                 return self._parse_response(result)
                 
         except urllib.error.HTTPError as e:
             error_body = e.read().decode('utf-8') if e.fp else ''
             logger.error(f"Erreur HTTP Gemini API: {e.code} - {error_body}")
-            if e.code == 403:
-                return (
-                    "Bonjour ! Je suis l'assistant virtuel de DELAMOU Samaké. "
-                    "Le service intelligent n'est pas correctement configuré. "
-                    "Veuillez contacter DELAMOU à samakedelamou858@gmail.com."
-                )
-            return "Une erreur est survenue lors de la communication avec l'IA. Veuillez réessayer."
+            return "Une erreur de communication est survenue. Veuillez contacter le Dr. Castro directement via le formulaire."
         except Exception as e:
             logger.error(f"Erreur inattendue Gemini Service: {str(e)}")
             return "Désolé, je ne peux pas répondre pour le moment. Veuillez réessayer plus tard."
