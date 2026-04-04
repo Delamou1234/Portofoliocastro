@@ -1,0 +1,237 @@
+{% extends 'home/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Tableau de Bord{% endblock %}
+{% block header_title %}Vue d'ensemble{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'home/css/dashboard_main.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <!-- KPI Header -->
+    <div class="kpi-header">
+        <div class="kpi-card primary">
+            <div class="kpi-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-value">{{ project_count }}</span>
+                <span class="kpi-label">Projets créés</span>
+                <span class="kpi-change positive">{{ growth_projects }}</span>
+            </div>
+        </div>
+        <div class="kpi-card secondary">
+            <div class="kpi-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-value">{{ skill_count }}</span>
+                <span class="kpi-label">Compétences</span>
+                <span class="kpi-change positive">{{ growth_skills }}</span>
+            </div>
+        </div>
+        <div class="kpi-card success">
+            <div class="kpi-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-value">{{ total_messages }}</span>
+                <span class="kpi-label">Messages total</span>
+                <span class="kpi-change positive">{% if unread_messages > 0 %}{{ unread_messages }} non lus{% else %}Tout lu{% endif %}</span>
+            </div>
+        </div>
+        <div class="kpi-card warning">
+            <div class="kpi-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-value">{{ featured_count }}</span>
+                <span class="kpi-label">Projets en vedette</span>
+                <span class="kpi-change positive">Mis en avant</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-main-grid">
+        <!-- Colonne Gauche: Projets Récents -->
+        <div class="dashboard-column">
+            <div class="dashboard-card">
+                <div class="card-header-modern">
+                    <h3>Projets récents</h3>
+                    <button class="btn-primary-dashboard" data-url="{% url 'dashboard_projects' %}">
+                        <i class="fas fa-plus"></i> Nouveau projet
+                    </button>
+                </div>
+                
+                <div class="projects-grid-modern">
+                    {% for project in latest_projects %}
+                    <div class="project-card-modern">
+                        <div class="project-image-wrapper">
+                            {% if project.image %}
+                                <img src="{{ project.image }}" alt="{{ project.title }}">
+                            {% else %}
+                                <div class="project-placeholder-modern">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            {% endif %}
+                            <div class="project-overlay">
+                                <span>{{ project.created_at|date:"d M" }}</span>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h4 class="project-title-modern">{{ project.title }}</h4>
+                            <p class="project-desc-modern">{{ project.description|truncatewords:15 }}</p>
+                            <div class="project-tech-tags">
+                                {% for tech in project.get_technologies_list|slice:":3" %}
+                                    <span class="tech-tag-modern">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state-modern">
+                        <i class="fas fa-folder-open"></i>
+                        <p>Aucun projet récent</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="card-footer-modern" style="padding: 20px; text-align: center; border-top: 1px solid #f1f5f9;">
+                    <a href="{% url 'dashboard_projects' %}" style="color: var(--primary); font-weight: 600; text-decoration: none; font-size: 14px;">
+                        Voir tous les projets <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne Droite: Stats & Graphique -->
+        <div class="dashboard-column">
+            <!-- Statistiques Rapides -->
+            <div class="dashboard-card">
+                <div class="card-header-modern">
+                    <h3>Performance</h3>
+                    <button class="action-btn" title="Actualiser">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="stats-grid-modern">
+                    <div class="stat-item-modern">
+                        <div class="stat-icon-wrapper blue">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">{{ project_count }}</span>
+                            <span class="stat-label">Total projets</span>
+                        </div>
+                    </div>
+                    <div class="stat-item-modern">
+                        <div class="stat-icon-wrapper green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">92%</span>
+                            <span class="stat-label">Complétion</span>
+                        </div>
+                    </div>
+                    <div class="stat-item-modern">
+                        <div class="stat-icon-wrapper purple">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">24h</span>
+                            <span class="stat-label">Temps moyen</span>
+                        </div>
+                    </div>
+                    <div class="stat-item-modern">
+                        <div class="stat-icon-wrapper orange">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">A+</span>
+                            <span class="stat-label">Qualité</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Chart -->
+            <div class="dashboard-card">
+                <div class="card-header-modern">
+                    <h3>Activité hebdomadaire</h3>
+                </div>
+                <div class="chart-container-modern">
+                    <div id="chart-data" style="display: none;" 
+                         data-activity="{{ daily_activity }}" 
+                         data-labels="{{ days_labels }}"></div>
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('activityChart').getContext('2d');
+        const chartDataEl = document.getElementById('chart-data');
+        
+        const dailyActivity = JSON.parse(chartDataEl.dataset.activity);
+        const daysLabels = JSON.parse(chartDataEl.dataset.labels);
+        
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.2)');
+        gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: daysLabels,
+                datasets: [{
+                    label: 'Projets ajoutés',
+                    data: dailyActivity,
+                    borderColor: '#6366f1',
+                    borderWidth: 3,
+                    backgroundColor: gradient,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#6366f1',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: '#1e293b',
+                        padding: 12,
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderWidth: 1,
+                        borderColor: '#334155'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { color: '#64748b', font: { size: 11 } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#64748b', font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

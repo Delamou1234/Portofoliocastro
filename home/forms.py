@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Profile, Project
+from .models import Profile, Project, Skill
 
 
 class ProfileForm(forms.ModelForm):
@@ -38,7 +38,18 @@ class ProjectForm(forms.ModelForm):
             'project_url',
             'github_url',
             'featured',
+            'is_visible',
         ]
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
+        }
+
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = ['name', 'category', 'icon']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Ex: Python, Tableau...'}),
+            'icon': forms.TextInput(attrs={'placeholder': 'Ex: fab fa-python...'}),
         }

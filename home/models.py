@@ -45,6 +45,7 @@ class Project(models.Model):
     project_url = models.URLField(blank=True, null=True)
     github_url = models.URLField(blank=True, null=True)
     featured = models.BooleanField(default=False)
+    is_visible = models.BooleanField(default=True, help_text="Détermine si le projet est affiché sur la page d'accueil")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

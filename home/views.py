@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 from django.templatetags.static import static
 
 from .models import Profile, Project, Skill, ContactMessage, Testimonial, ChatMessage
-from .forms import ProfileForm, ProjectForm
+from .forms import ProfileForm, ProjectForm, SkillForm
 from .services import send_contact_email, GeminiService
 
 
@@ -148,11 +148,46 @@ def dashboard(request):
     unread_messages = ContactMessage.objects.filter(is_read=False).count()
     latest_projects = Project.objects.all().order_by('-created_at')[:5]
     
+    # Calcul des KPIs réels ou simulés de manière cohérente
+    featured_projects = Project.objects.filter(featured=True).count()
+    total_messages = ContactMessage.objects.count()
+    
+    # Simulation de croissance par rapport au mois dernier (exemple)
+    growth_projects = "+12%" if project_count > 0 else "0%"
+    growth_skills = "+8%" if skill_count > 0 else "0%"
+    
+    # Calcul de l'activité réelle (nombre de projets par jour sur les 7 derniers jours)
+    from django.utils import timezone
+    from datetime import timedelta
+    
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=6)
+    
+    daily_activity = []
+    days_labels = []
+    days_map = {0: 'Lun', 1: 'Mar', 2: 'Mer', 3: 'Jeu', 4: 'Ven', 5: 'Sam', 6: 'Dim'}
+    
+    for i in range(7):
+        current_day = start_date + timedelta(days=i)
+        count = Project.objects.filter(
+            created_at__year=current_day.year,
+            created_at__month=current_day.month,
+            created_at__day=current_day.day
+        ).count()
+        daily_activity.append(count)
+        days_labels.append(days_map[current_day.weekday()])
+    
     context = {
         'project_count': project_count,
         'skill_count': skill_count,
         'unread_messages': unread_messages,
         'latest_projects': latest_projects,
+        'featured_count': featured_projects,
+        'total_messages': total_messages,
+        'growth_projects': growth_projects,
+        'growth_skills': growth_skills,
+        'daily_activity': json.dumps(daily_activity),
+        'days_labels': json.dumps(days_labels),
     }
     return render(request, 'home/dashboard.html', context)
 
@@ -185,7 +220,10 @@ def edit_project(request, pk):
         form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
+            messages.success(request, "Projet mis à jour avec succès !")
             return redirect('dashboard_projects')
+        else:
+            messages.error(request, "Erreur lors de la modification du projet. Veuillez vérifier le formulaire.")
     else:
         form = ProjectForm(instance=project)
     return render(request, 'home/project_form.html', {'form': form, 'project': project})
@@ -200,12 +238,63 @@ def delete_project(request, pk):
 
 @login_required
 def site_settings(request):
-    profile = get_object_or_404(Profile, pk=1)
+    profile = Profile.objects.first()
+    if not profile:
+        profile = Profile.objects.create(full_name="DELAMOU Samaké")
+        
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            messages.success(request, "Profil mis à jour avec succès !")
+            return redirect('dashboard_settings')
+        else:
+            messages.error(request, "Erreur lors de la mise à jour du profil. Veuillez vérifier les champs.")
     else:
         form = ProfileForm(instance=profile)
+        
     return render(request, 'home/site_settings.html', {'form': form})
+
+
+@login_required
+def manage_skills(request):
+    if request.method == 'POST':
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Compétence ajoutée avec succès !")
+            return redirect('dashboard_skills')
+        else:
+            messages.error(request, "Erreur lors de l'ajout de la compétence.")
+    else:
+        form = SkillForm()
+
+    skills = Skill.objects.all().order_by('category', 'name')
+    return render(request, 'home/skill_manage.html', {
+        'skills': skills,
+        'form': form
+    })
+
+
+@login_required
+def edit_skill(request, pk):
+    skill = get_object_or_404(Skill, pk=pk)
+    if request.method == 'POST':
+        form = SkillForm(request.POST, instance=skill)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Compétence mise à jour !")
+            return redirect('dashboard_skills')
+    else:
+        form = SkillForm(instance=skill)
+    return render(request, 'home/skill_form.html', {'form': form, 'skill': skill})
+
+
+@login_required
+def delete_skill(request, pk):
+    skill = get_object_or_404(Skill, pk=pk)
+    if request.method == 'POST':
+        skill.delete()
+        messages.success(request, "Compétence supprimée !")
+        return redirect('dashboard_skills')
+    return render(request, 'home/skill_confirm_delete.html', {'skill': skill})

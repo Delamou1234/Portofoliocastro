@@ -1,0 +1,96 @@
+{% extends 'home/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Supprimer le Projet{% endblock %}
+{% block header_title %}Confirmation de suppression{% endblock %}
+
+{% block extra_css %}
+<style>
+    .delete-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        max-width: 500px;
+        margin: 50px auto;
+        overflow: hidden;
+        text-align: center;
+        padding: 40px;
+    }
+    .delete-icon {
+        width: 80px;
+        height: 80px;
+        background: #fef2f2;
+        color: var(--danger);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        margin: 0 auto 24px;
+    }
+    .delete-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 16px;
+    }
+    .delete-text {
+        color: var(--secondary);
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 32px;
+    }
+    .delete-actions {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+    }
+    .btn-confirm-delete {
+        background: var(--danger);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    .btn-confirm-delete:hover {
+        background: #b91c1c;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+    }
+    .btn-cancel {
+        background: #f1f5f9;
+        color: var(--secondary);
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    .btn-cancel:hover {
+        background: #e2e8f0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="delete-card">
+    <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3 class="delete-title">Supprimer le projet ?</h3>
+    <p class="delete-text">
+        Êtes-vous sûr de vouloir supprimer le projet <strong>"{{ project.title }}"</strong> ?<br>
+        Cette action est irréversible.
+    </p>
+    <form method="post" class="delete-actions">
+        {% csrf_token %}
+        <a href="{% url 'dashboard_projects' %}" class="btn-cancel">Annuler</a>
+        <button type="submit" class="btn-confirm-delete">Oui, supprimer</button>
+    </form>
+</div>
+{% endblock %}
