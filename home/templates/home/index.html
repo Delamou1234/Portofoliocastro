@@ -228,20 +228,13 @@
                                     <span>{{ tech }}</span>
                                 {% endfor %}
                             </div>
-                            {% if project.github_url or project.project_url %}
                             <div class="project-footer">
                                 {% if project.github_url %}
                                 <a href="{{ project.github_url }}" class="btn-github" target="_blank">
-                                    <i class="fab fa-github"></i> Code
-                                </a>
-                                {% endif %}
-                                {% if project.project_url %}
-                                <a href="{{ project.project_url }}" class="btn-demo" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> Démo
+                                    <i class="fab fa-github"></i> Consulter le Code
                                 </a>
                                 {% endif %}
                             </div>
-                            {% endif %}
                         </div>
                     </div>
                     {% empty %}
