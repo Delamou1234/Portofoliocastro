@@ -30,7 +30,11 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-dev-key-change-in-p
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes', 'on')
 
 # ALLOWED_HOSTS - Liste des hôtes autorisés
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '://onrender.com',  # Ton URL Render
+    'localhost',
+    '127.0.0.1',
+]
 allowed_hosts_str = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
 if allowed_hosts_str:
     ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_str.split(',') if host.strip()]
