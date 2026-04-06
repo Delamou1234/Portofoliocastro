@@ -6,12 +6,16 @@
 services:
   - type: web
     name: castro-portfolio
+    env: python
+    plan: free
     runtime: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn Portofolio.wsgi:application"
+    buildCommand: ./build.sh
+    startCommand: gunicorn Portofolio.wsgi:application
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.10.10
+      - key: DJANGO_SETTINGS_MODULE
+        value: Portofolio.settings
       - key: DJANGO_SECRET_KEY
         generateValue: true  # Génère automatiquement une clé sécurisée
       - key: DJANGO_DEBUG
