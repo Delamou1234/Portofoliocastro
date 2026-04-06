@@ -30,14 +30,14 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-dev-key-change-in-p
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes', 'on')
 
 # ALLOWED_HOSTS - Liste des hôtes autorisés
-ALLOWED_HOSTS = [
-    '://onrender.com',  # Ton URL Render
-    'localhost',
-    '127.0.0.1',
-]
-allowed_hosts_str = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
+# Hôtes par défaut (toujours inclus)
+DEFAULT_ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+allowed_hosts_str = os.getenv('DJANGO_ALLOWED_HOSTS', '')
 if allowed_hosts_str:
-    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_str.split(',') if host.strip()]
+    # Fusionner les hôtes par défaut avec ceux de l'environnement
+    ALLOWED_HOSTS = DEFAULT_ALLOWED_HOSTS + [host.strip() for host in allowed_hosts_str.split(',') if host.strip()]
+else:
+    ALLOWED_HOSTS = DEFAULT_ALLOWED_HOSTS
 
 # Application definition
 INSTALLED_APPS = [
