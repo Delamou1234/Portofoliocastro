@@ -138,6 +138,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'home' / 'static',
+    BASE_DIR / 'home' / 'asset',
 ]
 
 # Configuration WhiteNoise pour la production

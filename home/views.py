@@ -47,15 +47,20 @@ def index(request):
         if not value or 'via.placeholder.com' in value:
             return 'https://source.unsplash.com/featured/?artificial-intelligence,data' if use_fallback else static('home/placeholder.svg')
         if not urlparse(value).scheme:
-            # Vérifier si l'image est dans media ou static
+            # Vérifier si l'image est dans media ou static/asset
             import os
             from django.conf import settings
             if os.path.exists(os.path.join(settings.MEDIA_ROOT, value)):
                 return settings.MEDIA_URL + value
+            # Tenter de résoudre via static (inclut home/static et home/asset via settings)
             return static('home/' + value)
         return value
 
-    profile_image_url = resolve_image_url(profile.profile_image, use_fallback=True)
+    # Forcer l'utilisation de castro.jpeg si c'est le profil par défaut
+    if profile.profile_image == "delamou.jpg" or not profile.profile_image:
+        profile_image_url = static('home/castro.jpeg')
+    else:
+        profile_image_url = resolve_image_url(profile.profile_image, use_fallback=True)
     for project in projects:
         project.image = resolve_image_url(project.image)
     for testimonial in testimonials:
