@@ -22,23 +22,21 @@ def splash(request):
 
 
 def index(request):
-    profile, created = Profile.objects.get_or_create(
-        pk=1,
-        defaults={
-            'full_name': 'DELAMOU Samaké',
-            'title': 'Étudiant en Informatique L3 | Passionné Data Analyst',
-            'bio': 'Étudiant en Licence 3 d\'Informatique à l\'Université de Labé, passionné par l\'analyse de données et l\'extraction d\'insights pertinents. Je développe mes compétences en Data Analysis pour aider les entreprises à prendre des décisions éclairées grâce à la data.',
-            'email': 'samakedelamou858@gmail.com',
-            'phone': '+223 629403019',
-            'location': 'Labé, Guinée',
-            'years_experience': 1,
-            'projects_count': 15,
-            'clients_count': 3,
-            'profile_image': 'delamou.jpg',
-        }
-    )
+    profile = Profile.objects.first()
+    if not profile:
+        profile = Profile.objects.create(
+            full_name='Dr. Eng. H. Castro',
+            title='PhD in Statistics & AI | AI & Machine Learning Expert',
+            bio='Expert en Statistiques et Intelligence Artificielle avec plus de 15 ans d\'expérience internationale.',
+            email='castrohounmenou@gmail.com',
+            phone='+229 95 30 66 12',
+            location='Bénin',
+            years_experience=15,
+            projects_count=50,
+            clients_count=20,
+        )
 
-    projects = Project.objects.filter(is_visible=True).order_by('-created_at')[:6]
+    projects = Project.objects.filter(is_visible=True).order_by('-created_at')
     skills_analysis = Skill.objects.filter(category='analysis')
     skills_programming = Skill.objects.filter(category='programming')
     skills_database = Skill.objects.filter(category='database')
@@ -118,9 +116,9 @@ def contact(request):
         else:
             messages.error(request, 'Veuillez remplir tous les champs.')
 
-        return redirect('home')
+        return redirect('home_portfolio')
 
-    return redirect('home')
+    return redirect('home_portfolio')
 
 
 @require_POST

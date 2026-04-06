@@ -13,7 +13,7 @@
     {% if messages %}
     <div id="django-messages" style="display: none;">
         {% for message in messages %}
-            <div class="django-message" data-level="{{ message.tags }}">{{ message|escapejs }}</div>
+            <div class="django-message" data-level="{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     </div>
     <script>
@@ -318,34 +318,58 @@
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container footer-content">
+    <footer class="footer doctoral-footer">
+        <div class="footer-top-border"></div>
+        <div class="container">
             <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="logo-container">
-                        <img src="{% static 'home/benin-flag.svg' %}" alt="Drapeau du Bénin">
-                        <span class="logo-text">PORTFOLIO</span>
+                <!-- Branding & Identity -->
+                <div class="footer-section brand-column">
+                    <div class="doctoral-seal">
+                        <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <p class="footer-tagline">Transformer l'incertitude en expertise décisionnelle.</p>
+                    <h3 class="footer-name">Dr. Eng. H. Castro, PhD</h3>
+                    <p class="footer-credentials">Senior Expert in Statistics & Artificial Intelligence</p>
+                    <div class="doctoral-motto">"Scientia et Expertise ad Progressum"</div>
                 </div>
-                <div class="footer-links">
-                    <h4>Navigation</h4>
-                    <ul>
-                        <li><a href="{% url 'home_portfolio' %}#home">Accueil</a></li>
-                        <li><a href="{% url 'home_portfolio' %}#about">Expertise</a></li>
-                        <li><a href="{% url 'home_portfolio' %}#skills">Recherche</a></li>
-                        <li><a href="{% url 'home_portfolio' %}#projects">Publications</a></li>
+
+                <!-- Contact & Location -->
+                <div class="footer-section contact-column">
+                    <h4 class="footer-heading">Coordonnées Professionnelles</h4>
+                    <ul class="footer-links-list">
+                        <li><i class="fas fa-envelope"></i> <span>{{ profile.email }}</span></li>
+                        <li><i class="fas fa-phone"></i> <span>{{ profile.phone }}</span></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <span>{{ profile.location }}</span></li>
                     </ul>
                 </div>
-                <div class="footer-contact">
-                    <h4>Contact Expertise</h4>
-                    <p><i class="fas fa-envelope"></i> castrohounmenou@gmail.com</p>
-                    <p><i class="fas fa-phone"></i> +229 95 30 66 12</p>
+
+                <!-- Strategic Links -->
+                <div class="footer-section links-column">
+                    <h4 class="footer-heading">Navigation Stratégique</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> Expertise Senior</a></li>
+                        <li><a href="#skills"><i class="fas fa-chevron-right"></i> Domaines de Recherche</a></li>
+                        <li><a href="#projects"><i class="fas fa-chevron-right"></i> Publications Scientifiques</a></li>
+                        <li><a href="{% url 'login' %}"><i class="fas fa-lock"></i> Portail Sécurisé</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social & Professional Networks -->
+                <div class="footer-section social-column">
+                    <h4 class="footer-heading">Réseaux Scientifiques</h4>
+                    <div class="doctoral-socials">
+                        {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+                        {% if profile.github %}<a href="{{ profile.github }}" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>{% endif %}
+                        <a href="https://wa.me/22995306612" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
             </div>
+
             <div class="footer-bottom">
-                <p>&copy; 2026 Dr. Eng. H. Castro. Tous droits réservés.</p>
-                <p class="academic-note">Senior Consultant in Public Health, Agriculture & Data Science</p>
+                <div class="footer-divider"></div>
+                <div class="footer-legal">
+                    <p>&copy; 2026 <strong>Dr. Eng. H. Castro</strong>. Tous droits réservés.</p>
+                    <p class="footer-subtext">Senior Consultant in Public Health, Agriculture & Data Science</p>
+                </div>
             </div>
         </div>
     </footer>

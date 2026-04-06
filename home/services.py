@@ -169,11 +169,16 @@ class GeminiService:
             logger.error(f"Erreur lors du parsing Gemini: {str(e)}")
             return "Erreur lors de la lecture de la réponse de l'IA."
 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core.mail import get_connection
+
 def send_contact_email(name: str, sender_email: str, subject: str, message: str) -> None:
-    """Envoie un message de contact au propriétaire du portfolio."""
+    """Envoie un message de contact au propriétaire du portfolio avec une connexion robuste."""
     email_subject = f"[Portfolio] {subject} - {name}"
     email_body = (
-        f"Nouveau message envoyé depuis le portfolio de DELAMOU Samaké.\n\n"
+        f"Nouveau message envoyé depuis le portfolio du Dr. Eng. H. Castro.\n\n"
         f"Nom : {name}\n"
         f"Email : {sender_email}\n"
         f"Objet : {subject}\n\n"
@@ -181,27 +186,37 @@ def send_contact_email(name: str, sender_email: str, subject: str, message: str)
     )
 
     try:
-        # Essayer de rendre le template HTML
+        # Rendu du template HTML
+        html_content = None
         try:
-            html_message = render_to_string('home/contact_email.html', {
+            html_content = render_to_string('home/contact_email.html', {
                 'name': name,
                 'sender_email': sender_email,
                 'subject': subject,
                 'message': message,
             })
         except Exception as e:
-            logger.warning(f"Erreur lors du rendu du template HTML: {str(e)}")
-            html_message = None
+            logger.warning(f"Template HTML non trouvé ou erreur de rendu: {str(e)}")
 
-        # Envoi de l'email
-        send_mail(
+        recipient = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)
+        
+        # Création de l'email
+        email = EmailMultiAlternatives(
             subject=email_subject,
-            message=email_body,
+            body=email_body,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)],
-            fail_silently=False,
-            html_message=html_message,
+            to=[recipient],
+            reply_to=[sender_email]
         )
+        
+        if html_content:
+            email.attach_alternative(html_content, "text/html")
+
+        # Utilisation d'une connexion explicite pour plus de stabilité
+        connection = get_connection(fail_silently=False)
+        email.connection = connection
+        email.send()
+        
         logger.info(f"Email envoyé avec succès de {sender_email}")
     except Exception as e:
         logger.error(f"Erreur fatale dans send_contact_email: {str(e)}")

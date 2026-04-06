@@ -1,0 +1,30 @@
+# ==============================================================================
+# CONFIGURATION RENDER - DÉPLOIEMENT AUTOMATIQUE
+# ==============================================================================
+# Ce fichier configure le déploiement sur Render (https://render.com)
+
+services:
+  - type: web
+    name: castro-portfolio
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn Portofolio.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DJANGO_SECRET_KEY
+        generateValue: true  # Génère automatiquement une clé sécurisée
+      - key: DJANGO_DEBUG
+        value: False
+      - key: DJANGO_ALLOWED_HOSTS
+        value: .onrender.com
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        value: https://castro-portfolio.onrender.com
+      - key: GEMINI_API_KEY
+        sync: false  # À configurer manuellement dans le dashboard Render
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false

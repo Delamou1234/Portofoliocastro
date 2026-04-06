@@ -7,6 +7,7 @@ Configuration professionnelle avec chargement automatique des variables d'enviro
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise pour les fichiers statiques
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,21 +80,14 @@ WSGI_APPLICATION = 'Portofolio.wsgi.application'
 # ==============================================================================
 # BASE DE DONNÉES
 # ==============================================================================
-# SQLite par défaut, PostgreSQL si configuré dans .env
+# SQLite par défaut, PostgreSQL si DATABASE_URL est configuré (Render)
 
-DB_ENGINE = os.getenv('DB_ENGINE', '')
+DATABASE_URL = os.getenv('DATABASE_URL', '')
 
-if DB_ENGINE:
-    # Configuration PostgreSQL pour la production
+if DATABASE_URL:
+    # Configuration PostgreSQL via DATABASE_URL (Render)
     DATABASES = {
-        'default': {
-            'ENGINE': DB_ENGINE,
-            'NAME': os.getenv('DB_NAME', 'portfolio_db'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', ''),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-        }
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
     # SQLite pour le développement
@@ -136,32 +131,44 @@ USE_TZ = True
 # ==============================================================================
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static_root'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'home' / 'static',
 ]
+
+# Configuration WhiteNoise pour la production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # ==============================================================================
-# CONFIGURATION EMAIL (SMTP)
+# CONFIGURATION EMAIL (SMTP GMAIL)
 # ==============================================================================
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', '')
 ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'castrohounmenou@gmail.com')
+EMAIL_TIMEOUT = 30
+EMAIL_USE_LOCALTIME = True
+
+# Forcer le hostname pour éviter l'erreur HELO 501 (Google)
+import socket
+try:
+    socket.gethostname = lambda: 'localhost'
+except:
+    pass
 
 # ==============================================================================
 # API GEMINI (ASSISTANT AI)
 # ==============================================================================
 
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'AIzaSyDRtxLFh-arsI4IWPw5TMSsvOEbIfL5Jz4')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 GEMINI_API_URL = os.getenv('GEMINI_API_URL', 'https://generativelanguage.googleapis.com/v1beta/models')
 GEMINI_API_MODEL = os.getenv('GEMINI_API_MODEL', 'gemini-2.5-flash')
 

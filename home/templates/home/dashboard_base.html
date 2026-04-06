@@ -13,8 +13,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --primary: #0f172a;
+            --primary-hover: #1e293b;
+            --accent: #38bdf8;
             --secondary: #64748b;
             --success: #10b981;
             --warning: #f59e0b;
@@ -36,7 +37,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
             color: var(--dark);
             overflow-x: hidden;
         }
@@ -50,7 +51,7 @@
         /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
-            background: var(--dark);
+            background: #0f172a;
             color: white;
             position: fixed;
             top: 0;
@@ -60,55 +61,68 @@
             transition: var(--transition);
             display: flex;
             flex-direction: column;
+            border-right: 1px solid rgba(255,255,255,0.05);
         }
 
         .sidebar-header {
-            padding: 24px;
+            padding: 32px 24px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .logo-box {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            font-size: 20px;
+            color: var(--accent);
+            font-size: 24px;
         }
 
         .sidebar-title {
-            font-size: 18px;
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .sidebar-nav {
-            padding: 20px 0;
+            padding: 24px 0;
             flex: 1;
             overflow-y: auto;
         }
 
         .nav-label {
-            padding: 0 24px 10px;
+            padding: 0 24px 12px;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            color: var(--secondary);
-            letter-spacing: 1px;
+            color: #475569;
+            letter-spacing: 1.5px;
         }
 
         .nav-link {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 24px;
-            color: #cbd5e1;
+            padding: 14px 24px;
+            color: #94a3b8;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -117,19 +131,20 @@
         }
 
         .nav-link:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03);
             color: white;
         }
 
         .nav-link.active {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            border-left-color: var(--primary);
+            background: rgba(56, 189, 248, 0.05);
+            color: var(--accent);
+            border-left-color: var(--accent);
+            font-weight: 600;
         }
 
         .nav-link i {
             width: 20px;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .sidebar-footer {
@@ -308,47 +323,51 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo-box">DS</div>
-                <span class="sidebar-title">Dashboard Admin</span>
+                <div class="logo-box">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="sidebar-branding">
+                    <h3 class="sidebar-title">Espace Doctoral</h3>
+                    <p class="sidebar-subtitle">Dr. Eng. H. Castro</p>
+                </div>
             </div>
 
             <nav class="sidebar-nav">
-                <div class="nav-label">Menu Principal</div>
+                <div class="nav-label">Gestion de Recherche</div>
                 <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
                     <i class="fa-solid fa-chart-line"></i>
-                    Tableau de bord
+                    Vue d'ensemble
                 </a>
                 <a href="{% url 'dashboard_projects' %}" class="nav-link {% if 'projects' in request.path %}active{% endif %}">
                     <i class="fa-solid fa-microscope"></i>
-                    Mes Recherches
+                    Mes Publications
                 </a>
                 <a href="{% url 'dashboard_skills' %}" class="nav-link {% if 'skills' in request.path %}active{% endif %}">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    Expertises Académiques
+                    <i class="fa-solid fa-award"></i>
+                    Expertises Senior
                 </a>
 
-                <div class="nav-label">Profil</div>
+                <div class="nav-label">Configuration</div>
                 <a href="{% url 'dashboard_settings' %}" class="nav-link {% if 'settings' in request.path %}active{% endif %}">
                     <i class="fa-solid fa-user-gear"></i>
-                    Mon Profil
+                    Mon Profil Expert
                 </a>
             </nav>
 
             <div class="sidebar-footer">
-                <div class="developer-credit" style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px;">
-                    <p style="font-size: 11px; color: #94a3b8; line-height: 1.4;">
-                        <i class="fas fa-code" style="font-size: 10px; margin-right: 5px;"></i>
-                        Développé avec excellence par <br>
-                        <strong style="color: white;">Samaké DELAMOU</strong>
+                <div class="developer-credit" style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; text-align: center;">
+                    <p style="font-size: 10px; color: #64748b; line-height: 1.6; text-transform: uppercase; letter-spacing: 1px;">
+                        Développé par<br>
+                        <strong style="color: #94a3b8; font-weight: 600;">Samaké DELAMOU</strong>
                     </p>
                 </div>
                 <a href="{% url 'home_portfolio' %}" class="user-profile">
-                    <div class="user-avatar">
-                        <i class="fa-solid fa-user"></i>
+                    <div class="user-avatar" style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2);">
+                        <i class="fa-solid fa-user" style="color: var(--accent);"></i>
                     </div>
                     <div class="user-info">
                         <span class="name">{{ user.username }}</span>
-                        <span class="role">Administrateur</span>
+                        <span class="role" style="color: var(--accent); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Expert Principal</span>
                     </div>
                 </a>
             </div>
