@@ -58,7 +58,7 @@ def index(request):
 
     # Forcer l'utilisation de castro.jpeg si c'est le profil par défaut
     if profile.profile_image == "delamou.jpg" or not profile.profile_image:
-        profile_image_url = static('castro.jpeg')  # Image dans home/asset/
+        profile_image_url = static('home/castro.jpeg')  # Image dans home/static/home/
     else:
         profile_image_url = resolve_image_url(profile.profile_image, use_fallback=True)
     for project in projects:
